@@ -1,0 +1,88 @@
+/* common styles */
+body {margin-top:8px; margin-right:8px; margin-bottom:8px; margin-left:8px; }
+body {background-color: #e0e0e0; font-size:10pt; font-family:Tahoma; }
+a:link {color: #000000; text-decoration: underline}
+a:visited {color: #000000; text-decoration: underline}
+a:hover {color: #000000; text-decoration: underline}
+a:active {color: #0000d0; text-decoration: underline}
+table {font-family:Arial; font-size:10pt;}
+/*table td {background-color: #ffffff; font-size:11pt;  text-align:center;}
+table th {background-color: #b0b0f0; font-size:10pt;  text-align:center;}*/
+table td {font-size:9pt;  text-align:left;}
+table th {font-size:10pt;  text-align:center;}
+
+/* table with form - layout (invisible) */
+table.layout {margin-left: auto; margin-right: auto; text-align: center; border-spacing: expression(cellSpacing=0); border-spacing: 0; border-collapse: collapse; }
+td.layout {padding-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; }
+
+/* table with form elements */
+table.form {margin-left: auto; margin-right: auto; text-align: left; border-top-width: thin; border: none;}
+table.form {border-spacing: expression(cellSpacing=0); border-spacing: 0; border-collapse: collapse;}
+td.form {padding-top:2px; padding-bottom:2px; padding-left:5px; padding-right:5px; text-align:left; }
+
+/* table with item lists */
+table.list {margin-left: auto; margin-right: auto; text-align: left; border-top-width: thin; border-color:#808080; border-style:solid; border-width:1px;}
+table.list {border-spacing: expression(cellSpacing=0); border-spacing: 0; border-collapse: collapse;}
+th.list {padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; text-align:center;}
+th.list {background-color: #c0c0c0;}
+td.list {padding-top: 2px; padding-bottom: 2px; padding-left: 5px; padding-right: 5px; text-align: left; }
+
+/* table with grid between all cells */
+table.grid {margin-left: auto; margin-right: auto; text-align: left; border-top-width: thin; border-color:#808080; border-style:solid; border-width:1px;}
+table.grid {border-spacing: expression(cellSpacing=0); border-spacing: 0; border-collapse: collapse;}
+th.grid {padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; text-align:center;}
+th.grid {background-color: #c0c0c0; border: solid #808080 1px;}
+td.grid {padding-top: 2px; padding-bottom: 2px; padding-left: 5px; padding-right: 5px; text-align: left; border-color:#808080; border-style:solid; border-width:1px; }
+
+#bottom_line {border-bottom: solid #808080 1px;}
+#framed {border: solid #808080 1px;}
+
+table tr#even_row {background-color: #ffffff}
+table tr#odd_row {background-color: #e0e0e0}
+
+/* table with form - fields */
+.field {margin-left: auto; margin-right: auto; text-align: left; border-spacing: expression(cellSpacing=0); border-spacing: 0; background-color: #d0e0e0;}
+.field td {padding-top: 0; padding-bottom: 0; padding-left: 5px; padding-right: 5px; text-align: center; background-color: #b0b0f0;}
+.field th {padding-top: 0; padding-bottom: 0; padding-left: 0; padding-right: 0; background-color: #b0b0f0; border-left: solid #d0e0e0 2px;}
+
+/* form inputs */
+textarea,
+select {
+    margin: 0px 3px 0px 3px;
+    padding: 1px 0px;
+    background: #f0f0f0;
+    font-size:9pt;
+		border: solid #808080 1px;
+}
+
+input {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
+    background: #f0f0f0;
+    font-size:9pt;
+    text-align: center;
+    border-top-width: thin;
+		border: solid #808080 1px;
+}
+
+input.image {
+    margin: 0px;
+    padding: 0px;
+    background: #ffffff;
+    border: 0px none;
+}
+
+input.button {
+    margin: 0px;
+    padding: 1px 3px 1px 3px;
+    background: #e0e0e0;
+    font-size:10pt;
+}
+
+#left {text-align: left;}
+#center {text-align: center;}
+#right {text-align: right;}
+#compact {font-size:8pt;}
+#big {font-size:12pt;}
+#error {color: #f00000}
+#amount {font-size:10pt; font-family:"Courier New";}

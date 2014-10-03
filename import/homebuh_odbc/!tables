@@ -1,0 +1,52 @@
+
+ *Accounts - счета
+ *AccountTransfer - перемещения между счетами (Cikl - id)
+
+ *CategoryExpenses - категории расходов (справочник)
+ *SubcategoryExpenses - подкатегории расходов (справочник)
+ *Expenses - все расходы (Cikl - id)
+
+ *CategoryIncomes - категории доходов (справочник)
+ *SubcategoryIncomes - подкатегории расходов (справочник)
+ *Incomes - все доходы
+
+ *Creditors - кредиторы (Cikl - id)
+ *CreditorsBack - возвраты долгов (Cikl - id) 
+ *Debtors - должники (Cikl - id)
+ *DebtorsBack - возвраты долгов (Cikl - id)
+
+--------- не исп
+
+AccountsList - операции со счетами (итоги по дням ???)
+
+CreditorsList - имена кредиторов (справочник)
+
+DebtorsList - имена должников (справочник)
+
+DebtBackTemp - пусто
+DebtRemind - пусто
+
+Units - единицы измерения (у нас - "шт.")
+Currency - используемые валюты (справочник)
+CurrencyList - все валюты  (справочник)
+GetRate - скачанные курсы валют
+Rate - пусто
+RateEdit - пусто
+
+Users - пользователи (у нас - "все")
+
+PlanExpenses - планируемые расходы (пусто)
+PlanIncomes - планируемые доходы (пусто)
+PlanRemind - пусто
+
+Exchange - пусто
+General - параметры программы (версия, нек. переменные)
+StartBalans - ?
+Temp - ?
+
+---------- послабления, которые я для себя поставил :
+
+ 1. для одного пользователя (не исп.: таблица Users и поля Name во многих таблицах)
+ 2. для одной валюты (не исп.: таблица Rate и поля NumCurrency и Rate1 в Expenses)
+ 3. для одной единицы измерения (не исп.: таблица Units и поле Unit в Expenses)
+ 4. целочисленное количество (не исп.: поле Quantity в Expenses)

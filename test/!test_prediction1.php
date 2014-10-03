@@ -1,0 +1,134 @@
+<?
+require_once("functions/config.php");
+require_once("functions/auth.php");
+require_once("functions/func_db.php");
+require_once("functions/func_dic.php");
+
+set_time_limit(0);
+
+echo "<pre>";
+echo "begin...\r\n";
+flush();
+
+/*
+$letters = array("б","в","г","д","ж","з","к","л","м","н","п","р","с","т","ф","х","ц","ч","ш","щ",
+"a","е","ё","и","й","о","у","ы","ь","ъ","э","ю","я");
+foreach($letters as $index => $letter)
+{
+	echo $letter;
+	if( preg_match_all( "/[a-zа-яё]+/", $letter, $matches ))
+		echo " - matched";
+	else
+		echo " - <font color=red>not matched!</font>";
+	echo "<br>";
+}
+exit;
+*/
+/*
+function get_words_variants($word)
+{
+	$word = strtolower($word);
+	$word = substr($word, 0, 16);
+
+//	echo "-------------------<br>";		
+//	echo "word:".$word."<br>";
+
+	$words = array();
+	
+	$length = strlen($word);
+	$length_1 = $length - 1; 
+	// убираем двойные буквы, добавляем пропуск и заодно меняем попарно
+	$prev_char = '';
+	$temp_word = "";
+	$temp_word2 = $word{0};
+	for( $i=0; $i<$length; $i++ )
+	{
+		$current_char = $word{$i};
+		if( $current_char <> $prev_char )
+					$temp_word .= $current_char;
+		if( $i>1 ) // со 2-ой буквы
+		{ 
+//			echo "begin:".$temp_word."<br>";
+//			echo "middle:".$current_char.$prev_char."<br>";
+//			echo "end:".substr($word, $i+1)."<br>";
+			$words[] = $temp_word2.$current_char.$prev_char.substr($word, $i+1);
+			$words[] = $temp_word2.$current_char.substr($word, $i+1);
+			$temp_word2 .= $prev_char;
+//			echo "--<br>";		
+		} 
+		$prev_char = $current_char;
+	}
+	$words[] = $temp_word; // само слово без двойных букв 
+	
+	return $words;
+}
+*/
+
+$temp_array= array(
+"kittoba", "слово", "голова", "слово"
+
+);
+
+$query = "select comment, id_subcat2, value from transactions where id_transfer=0";
+$res = db_query($query);
+while( $temp_array = db_fetch_num_array($res) )
+//foreach( $temp_array as $temp => $text  )
+{
+	$text = $temp_array[0];
+	$id_subcat2 = $temp_array[1];
+	if($temp_array[2] < 0 )
+		$id_trans_type = TRANS_TYPE_EXP;
+	else
+		$id_trans_type = TRANS_TYPE_INC;
+
+	$words = break_on_words($text);
+	if( !$words )
+		continue;		
+
+	foreach( $words as $temp => $word )
+	{
+			echo "--- word: ".$word." ";	
+//			$hash = reduce_text($word);
+//			echo "--- hash: ".$hash;
+			echo "<br>";
+//			$word_forms_array = get_words_variants($word);
+//			print_r($word_forms_array);
+			$hash = substr($word, 0, 16);  //max 16 symbols
+
+//			$word_counters[$word][$id_trans_type][$id_subcat2][] = 1;
+//			foreach( $word_forms_array as $temp => $hash )
+			$word_forms[$word][$id_trans_type][$id_subcat2][] = $hash;
+	}
+}
+
+//print_r($word_forms);
+//print_r($word_counters);
+
+$row_count = 0;
+
+foreach( $word_forms as $word => $arr1  )
+{
+	foreach( $arr1 as $id_trans_type => $arr2 )
+	{
+		foreach( $arr2 as $id_subcat2 => $arr3 )
+		{
+			$word_counter = count($word_forms[$word][$id_trans_type][$id_subcat2]);
+			$hash = $arr3[0];
+//			$word_counter = count($word_counters[$word][$id_trans_type][$id_subcat2]);
+//			foreach( $arr3 as $temp_index => $hash )
+			{
+				$query = "insert into dictionary(hash, word, id_trans_type, id_subcat2, counter) ";
+				$query .= "values (\"".$hash."\", \"".$word."\", ".$id_trans_type.", ".$id_subcat2.", ".$word_counter.")";
+//				echo $query."\r\n";
+				flush();
+				$res = db_query($query);
+				$row_count++;
+			}
+		}
+	}
+}
+echo "Inserted: ".$row_count." rows.<br>";
+
+// 8. Конец скрипта.
+include("footer.php");
+?>
