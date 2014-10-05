@@ -11,5 +11,5 @@ $id_import_mod = 2;
 $query = "DELETE FROM import_config WHERE id_import_mod=".$id_import_mod." AND name='last_step'"; 
 db_query($query);
 
-header("Location: homebuh_paradox/step2.php");
+header("Location: homebuh/step2.php");
 ?>
