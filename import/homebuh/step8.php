@@ -198,12 +198,6 @@ if( $action )
 			} 			
 		}
 	}// if( $action=='import' )
-	if( $action=='finish' ) {
-		// TODO: move to module config in db
-		$path_to_db = "/mnt/media2/work/finance/Homebuh4/Base/";
-		$lockfile = $path_to_db."/../file.lck";
-		unlink($lockfile);
-	}// if( $action=='finish' )
 } // if( $action )
 
 if( !$silent_mode )
@@ -838,7 +832,7 @@ if( 0 ) {
 else {
 	echo "<form name=\"form2\" action=\"step".$current_step.".php\" method=".FORM_METHOD.">";
 	echo "<div align=right>\r\n";
-	echo "<input type=button value=\"Закончить\" onClick=\"document.forms.form1.action.value='finish'; document.forms.form1.submit(); return true;\">\r\n";
+//	echo "<input type=button value=\"Закончить\" onClick=\"document.forms.form1.action.value='finish'; document.forms.form1.submit(); return true;\">\r\n";
 	echo "</div>\r\n";
 	echo "</form>\r\n";
 }

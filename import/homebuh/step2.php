@@ -495,6 +495,9 @@ if( !$action )
 		echo "Найдено <b>".$CSV_rows."</b> записи/ей о занятых другим людям деньгах.\r\n";
 		
 		db_query("OPTIMIZE TABLE `import_draft`");
+		
+		// thas was import from the last table. Remove lock file.
+		unlink($lockfile);
 	}
 	// сохраняем шаг
 	if( !set_config_value($id_import_mod, "last_step", $current_step) )
