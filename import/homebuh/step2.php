@@ -63,26 +63,6 @@ function get_elapsed_microtime()
 get_microtime();
 */
 
-function paradox_to_CSV( $px_file, $csv_file, $fields_array ) {
-	if( !$px_file || !$csv_file || !$fields_array )
-		return false;
-	if ( !is_array($fields_array) )
-		return false;
-	$fields_txt = "";
-	foreach( $fields_array as $tmp => $field_name ) {
-		if( $fields_txt )
-			$fields_txt .= "|";
-		$fields_txt .= $field_name;
-	}
-	$return_val = 0;
-	$output = system("pxview --csv --recode=utf8 --separator='\t' --without-head --fields='(".$fields_txt.")' ".$px_file." > ".$csv_file, $return_val);
-	if( $return_val > 0 ) {
-		echo $output;
-		return false;
-	}
-	return true;
-}
-
 // convert Paradox files to CSV
 $input_file = $path_to_db."Accounts.DB";
 if( !paradox_to_CSV($input_file, $path_to_CSV."accounts.csv", array("Account", "StartBalans1", "Total1")) ) {

@@ -25,9 +25,7 @@ if( $silent_import_enabled === false || $silent_import_enabled !== "1" ) {
 	exit(1);
 }
 
-$px_dbs = array();
 $path_to_db = "/mnt/media2/work/finance/Homebuh4/Base/";
-
 
 $last_modified = filemtime($path_to_db);
 $db_last_modified = get_config_value($id_import_mod, "db_last_modified");
@@ -54,19 +52,6 @@ if( $need_to_load ) {
 	db_query("DELETE FROM import_draft");
 
 	$silent_mode = true;
-
-//	moved to step2, may be deleted
-/*
-	$lockfile = $path_to_db."/../file.lck";
-	$fp = @fopen($lockfile, 'r');
-	if( $fp === false ) {
-		$fp = fopen($lockfile, 'w');
-		fputs($fp, "silent");
-		fclose($fp);
-	}
-	else
-		fclose($fp);
-*/
 
 //---------------------------------------------------------------------------------------------------------	
 	include("step2.php");
@@ -127,10 +112,6 @@ if( $need_to_load ) {
 		include("step8.php");		
 	}
 //---------------------------------------------------------------------------------------------------------	
-	// moved to last step8, but...
-	// for every case, force delete lock file
-	$lockfile = $path_to_db."/../file.lck";
-	unlink($lockfile);
 	if( $exit_code )
 		echo "<hr>Ошибка ! --------------------------------------------------------".$nl;
 }

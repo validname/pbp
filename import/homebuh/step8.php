@@ -800,7 +800,9 @@ if( $silent_mode ){
 		$exit_code = 0;
 	}
 	else
-			$exit_code = 6;	// disbalanced
+		//$exit_code = 6;	// disbalanced
+		echo "Разбалансировка, но пока временно игнорируем.\n";
+		$exit_code = 0;
 }
 else {
 
