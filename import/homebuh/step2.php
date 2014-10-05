@@ -5,12 +5,11 @@ require_once('../../functions/func_db.php');
 require_once('../../functions/func_web.php');
 require_once("../../functions/func_time.php");
 require_once("../functions/import_config.php");
-require_once("../functions/px_wrapper.php");
+require_once("../functions/csv.php");
 
 if(!isset($silent_mode))
 	$silent_mode = false;
 
-$px_dbs = array();
 $path_to_db = "/mnt/media2/work/finance/Homebuh4/Base/";
 
 $module_name = "HomeBuh_paradox";
@@ -152,19 +151,19 @@ if( !$action )
 		// загрузка баланса счетов из ДБ 
 		echo "<hr>1. Баланс счетов ДБ.\r\n";
 		flush();
-		$px_res = px_open_db("Accounts");
-		if( !$px_res ) {
+		$CSV_res = open_CSV("Accounts");
+		if( !$CSV_res ) {
 			echo "Ошибка открытия таблицы Accounts в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		$px_rows = 0;
-		while( $result_array = px_select_from_db($px_res) )
+		$CSV_rows = 0;
+		while( $result_array = get_CSV_record($CSV_res) )
 		{
 			$id_homebuh = (int)$result_array['MyCikl'];
 			$account_name = $result_array['Account'];
 			$balance = (float)$result_array['Total1'];	//баланс счета по версии ДБ
 			$start_balance = (float)$result_array['StartBalans1'];	//стартовый баланс счета ДБ
-			$px_rows++;
+			$CSV_rows++;
 
 			$query  = "UPDATE import_map_acc SET balance='".$balance."', start_balance='".$start_balance."' WHERE name='".db_add_slashes($account_name)."'";
 			if( !db_query($query) )
@@ -173,8 +172,8 @@ if( !$action )
 				exit(5);
 			}
 		}
-		px_close_db($px_res);
-		echo "Найдено <b>".$px_rows."</b> счетов.\r\n";
+		close_CSV($CSV_res);
+		echo "Найдено <b>".$CSV_rows."</b> счетов.\r\n";
 	
 		$id_account_debt = 0;
 		$account_debt_name = "";
@@ -206,13 +205,13 @@ if( !$action )
 		//------------------------------------------------------------------------------ 1. Расходы
 		echo "<hr>2. Расходы.\r\n";
 		flush();
-		$px_res = px_open_db("Expenses");
-		if( !$px_res ) {
+		$CSV_res = open_CSV("Expenses");
+		if( !$CSV_res ) {
 			echo "Ошибка открытия таблицы Expenses в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		$px_rows = 0;
-		while( $result_array = px_select_from_db($px_res) )
+		$CSV_rows = 0;
+		while( $result_array = get_CSV_record($CSV_res) )
 		{
 			$id_homebuh = (int)$result_array['Cikl'];
 			$account_name = $result_array['Account'];
@@ -222,7 +221,7 @@ if( !$action )
 			$quantity = (int)$result_array['Quantity'];
 			$value = $result_array['Money1'];
 			$comment = $result_array['Note'];
-			$px_rows++;
+			$CSV_rows++;
 			$query  = "INSERT INTO import_draft(date, account, cat,	subcat, subcat2, quantity, value, comment, id_trans_type, change_type) ";
 			$query .= " VALUES(";
 			$query .= "\"".$date."\", ";
@@ -241,19 +240,19 @@ if( !$action )
 				exit(5);
 			}
 		}
-		px_close_db($px_res);
-		echo "Найдено <b>".$px_rows."</b> записи/ей о расходах.\r\n";
+		close_CSV($CSV_res);
+		echo "Найдено <b>".$CSV_rows."</b> записи/ей о расходах.\r\n";
 			
 		//------------------------------------------------------------------------------ 2. Доходы
 		echo "<hr>3. Доходы.\r\n";
 		flush();
-		$px_res = px_open_db("Incomes");
-		if( !$px_res ) {
+		$CSV_res = open_CSV("Incomes");
+		if( !$CSV_res ) {
 			echo "Ошибка открытия таблицы Incomes в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		$px_rows = 0;
-		while( $result_array = px_select_from_db($px_res) )
+		$CSV_rows = 0;
+		while( $result_array = get_CSV_record($CSV_res) )
 		{
 			$id_homebuh = (int)$result_array['Cikl'];
 			$account_name = $result_array['Account'];
@@ -263,7 +262,7 @@ if( !$action )
 			$quantity = (int)$result_array['Quantity'];
 			$value = $result_array['Money1'];
 			$comment = $result_array['Note'];
-			$px_rows++;
+			$CSV_rows++;
 			$query  = "INSERT INTO import_draft(date, account, cat,	subcat, subcat2, quantity, value, comment, id_trans_type, change_type) ";
 			$query .= " VALUES(";
 			$query .= "\"".$date."\", ";
@@ -282,20 +281,20 @@ if( !$action )
 				exit(5);
 			}
 		}
-		px_close_db($px_res);
-		echo "Найдено <b>".$px_rows."</b> записи/ей о доходах.\r\n";
+		close_CSV($CSV_res);
+		echo "Найдено <b>".$CSV_rows."</b> записи/ей о доходах.\r\n";
 	
 		//------------------------------------------------------------------------------ 3. Перемещения между счетами
 		echo "<hr>4. Перемещения между счетами.\r\n";
 		flush();
-		$px_res = px_open_db("AccountTransfer");
-		if( !$px_res ) {
+		$CSV_res = open_CSV("AccountTransfer");
+		if( !$CSV_res ) {
 			echo "Ошибка открытия таблицы AccountTransfer в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
 		
-		$px_rows = 0;
-		while( $result_array = px_select_from_db($px_res) )
+		$CSV_rows = 0;
+		while( $result_array = get_CSV_record($CSV_res) )
 		{
 			$id_homebuh	= $result_array['Cikl']; 
 			$account1_name = $result_array['AccountOut']; // с которого
@@ -303,7 +302,7 @@ if( !$action )
 			$date = $result_array['MyDate'];
 			$value = $result_array['MyMoney'];
 			$comment = $result_array['Note'];
-			$px_rows++;
+			$CSV_rows++;
 			$query  = "INSERT INTO import_draft(date, account, cat,	subcat, subcat2, quantity, value, comment, id_trans_type, change_type) ";
 			$query .= " VALUES(";
 			$query .= "\"".$date."\", ";
@@ -322,8 +321,8 @@ if( !$action )
 				exit(5);
 			}
 		}
-		px_close_db($px_res);
-		echo "Найдено <b>".$px_rows."</b> записи/ей о перемещениях.\r\n";
+		close_CSV($CSV_res);
+		echo "Найдено <b>".$CSV_rows."</b> записи/ей о перемещениях.\r\n";
 	
 		//------------------------------------------------------------------------------ 4. Кредиторы
 		echo "<hr>5. Кредиторы.\r\n";
@@ -331,22 +330,22 @@ if( !$action )
 
 		//  возврат долга записывается как сумма возвратов в отдельной таблице - подгружаем её
 		$creditorsback = array();
-		$px_res2 = px_open_db("CreditorsBack");
-		if( !$px_res2 ) {
+		$CSV_res2 = open_CSV("CreditorsBack");
+		if( !$CSV_res2 ) {
 			echo "Ошибка открытия таблицы CreditorsBack в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		while( $result_array2 = px_select_from_db($px_res2) )
+		while( $result_array2 = get_CSV_record($CSV_res2) )
 			$creditorsback[$result_array2['CiklDebt']][] = $result_array2;
-		px_close_db($px_res2);
+		close_CSV($CSV_res2);
 		//  - что занимали у других
-		$px_res = px_open_db("Creditors");
-		if( !$px_res ) {
+		$CSV_res = open_CSV("Creditors");
+		if( !$CSV_res ) {
 			echo "Ошибка открытия таблицы Creditors в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		$px_rows = 0;
-		while( $result_array = px_select_from_db($px_res) )
+		$CSV_rows = 0;
+		while( $result_array = get_CSV_record($CSV_res) )
 		{
 			// факт заема
 			$id_homebuh	= $result_array['MyCikl']; 
@@ -358,7 +357,7 @@ if( !$action )
 //			$debt_procent = (float)$result_array['DebtPercent'];
 			$value = (float)$result_array['Money1']; // сумма долга
 			$comment = "[".$result_array['FIO']." - ".$result_array['Note']."] взяли в долг";
-			$px_rows++;
+			$CSV_rows++;
 			$query  = "INSERT INTO import_draft(date, account, cat,	subcat, subcat2, quantity, value, comment, id_trans_type, change_type) ";
 			$query .= " VALUES(";
 			$query .= "\"".$date."\", ";
@@ -406,8 +405,8 @@ if( !$action )
 				}
 			}
 		}
-		px_close_db($px_res);
-		echo "Найдено <b>".$px_rows."</b> записи/ей о занятых у других людей деньгах.\r\n";
+		close_CSV($CSV_res);
+		echo "Найдено <b>".$CSV_rows."</b> записи/ей о занятых у других людей деньгах.\r\n";
 	
 		//------------------------------------------------------------------------------ 4. Заёмщики
 		echo "<hr>6. Заёмщики.\r\n";
@@ -415,23 +414,23 @@ if( !$action )
 		
 		//  возврат долга записывается как сумма возвратов в отдельной таблице - подгружаем её
 		$debtorsback = array();
-		$px_res2 = px_open_db("DebtorsBack");
-		if( !$px_res2 ) {
+		$CSV_res2 = open_CSV("DebtorsBack");
+		if( !$CSV_res2 ) {
 			echo "Ошибка открытия таблицы DebtorsBack в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		while( $result_array2 = px_select_from_db($px_res2) )
+		while( $result_array2 = get_CSV_record($CSV_res2) )
 			$debtorsback[$result_array2['CiklDebt']][] = $result_array2;
-		px_close_db($px_res2);
+		close_CSV($CSV_res2);
 			
 		//  - что занимали другим
-		$px_res = px_open_db("Debtors");
-		if( !$px_res ) {
+		$CSV_res = open_CSV("Debtors");
+		if( !$CSV_res ) {
 			echo "Ошибка открытия таблицы Debtors в БД HomeBuh. Экстренный выход\r\n";
 			exit(4);
 		}
-		$px_rows = 0;
-		while( $result_array = px_select_from_db($px_res) )
+		$CSV_rows = 0;
+		while( $result_array = get_CSV_record($CSV_res) )
 		{
 	
 			$id_homebuh	= $result_array['MyCikl']; 
@@ -443,7 +442,7 @@ if( !$action )
 //			$debt_procent = (float)$result_array['DebtPercent'];
 			$value = (float)$result_array['Money1']; // сумма долга
 			$comment = "[".$result_array['FIO']." - ".$result_array['Note']."] дали в долг";
-			$px_rows++;
+			$CSV_rows++;
 			$query  = "INSERT INTO import_draft(date, account, cat,	subcat, subcat2, quantity, value, comment, id_trans_type, change_type) ";
 			$query .= " VALUES(";
 			$query .= "\"".$date."\", ";
@@ -492,8 +491,8 @@ if( !$action )
 				}
 			}
 		}
-		px_close_db($px_res);
-		echo "Найдено <b>".$px_rows."</b> записи/ей о занятых другим людям деньгах.\r\n";
+		close_CSV($CSV_res);
+		echo "Найдено <b>".$CSV_rows."</b> записи/ей о занятых другим людям деньгах.\r\n";
 		
 		db_query("OPTIMIZE TABLE `import_draft`");
 	}
