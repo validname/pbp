@@ -442,7 +442,7 @@ if( !$action )
 //		print_r($import_array);
 
 		// теперь в $import_array остались только данные для добавления или измененные, а в $data_array - для удаления
-//		if( !$silent_mode) {
+		if( !$silent_mode) {
 			echo "<hr>4. Поиск удаленных имеющихся данных.<br>\r\n";
 			flush();
 			// конечно, не поиск, а просто мы их заносим в import_draft и помечаем как "для удаления" 
@@ -474,7 +474,7 @@ if( !$action )
 			}
 			echo "<hr><br>\r\n";
 			flush();
-		//}
+		}
 	}
 	// сохраняем шаг
 //temp-dps
