@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('../../functions/config.php');
 require_once('../../functions/auth.php');
 require_once('../../functions/func_db.php');
@@ -205,7 +205,7 @@ function set_subcat_list(form)
 	form.id_subcat2.length=0;
 	switch(form.id_cat.value)
 	{
-<?
+<?php
 foreach( $subcat_names as $id_cat => $temp_array)
 {
 	echo "		case '".$id_cat."':\r\n";
@@ -230,7 +230,7 @@ function set_subcat2_list(form)
 	form.id_subcat2.length=0;
 	switch(form.id_subcat.value)
 	{
-<?
+<?php
 foreach( $subcat2_names as $id_subcat => $temp_array)
 {
 	echo "		case '".$id_subcat."':\r\n";
@@ -261,7 +261,7 @@ foreach( $subcat2_names as $id_subcat => $temp_array)
 <th class=list id=framed>Внутр. подкатегория</th>
 <th class=list id=framed>Внутр. под2категория</th>
 </tr>
-<?
+<?php
 }
 
 $num = 0;
@@ -334,14 +334,14 @@ else {
 ?>
 </table>
 <br>
-<?
+<?php
 if( $no_mapping_num )
 	echo "<div align=center><font color=red>Без мэппинга: <b>".$no_mapping_num."</b></font></div><br>";
 ?>
 <table border=0 width=90% align=center>
 	<tr>
 		<td align=left width=50%>
-<?
+<?php
 echo "<form name=\"form\" action=\""."step".($current_step-1).".php"."\" method=".FORM_METHOD.">\r\n";
 echo "<div align=left>\r\n";
 echo "<input type=submit value=\"Назад\">\r\n";
@@ -350,7 +350,7 @@ echo "</form>\r\n";
 ?>
 		</td>
 		<td align=right width=50%>
-<?
+<?php
 echo "<form name=\"form\" action=\"step".($current_step+1).".php\" method=".FORM_METHOD.">";
 echo "<div align=right>\r\n";
 echo "<input type=button value=\"Далее\" onClick=\"window.location='step".($current_step+1).".php#bottom'; return true;\">\r\n";
@@ -362,7 +362,7 @@ echo "</form>\r\n";
 </table>
 </div>
 <a name=bottom>
-<?
+<?php
 // 7. Конец скрипта.
 include("footer.php");
 }

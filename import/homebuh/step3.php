@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('../../functions/config.php');
 require_once('../../functions/auth.php');
 require_once('../../functions/func_db.php');
@@ -186,7 +186,7 @@ function set_account_list(form)
 	form.id_account.length=0;
 	switch(form.id_acc_list.value)
 	{
-<?
+<?php
 foreach( $account_names as $id_acc_list => $accounts_array)
 {
 	echo "		case '".$id_acc_list."':\r\n";
@@ -214,7 +214,7 @@ foreach( $account_names as $id_acc_list => $accounts_array)
 <th class=list id=framed>Категория счёта</th>
 <th class=list id=framed>Внутренний счёт</th>
 </tr>
-<?
+<?php
 }
 
 $num = 0;
@@ -272,14 +272,14 @@ else {
 ?>
 </table>
 <br>
-<?
+<?php
 if( $no_mapping_num )
 	echo "<div align=center><font color=red>Без мэппинга: <b>".$no_mapping_num."</b></font></div><br>";
 ?>
 <table border=0 width=90% align=center>
 	<tr>
 		<td align=left width=50%>
-<?
+<?php
 echo "<form name=\"form\" action=\""."step".($current_step-1).".php"."\" method=".FORM_METHOD.">\r\n";
 echo "<div align=left>\r\n";
 echo "<input type=submit value=\"Назад\">\r\n";
@@ -288,7 +288,7 @@ echo "</form>\r\n";
 ?>
 		</td>
 		<td align=right width=50%>
-<?
+<?php
 echo "<form name=\"form\" action=\"step".($current_step+1).".php\" method=".FORM_METHOD.">";
 echo "<div align=right>\r\n";
 echo "<input type=button value=\"Далее\" onClick=\"window.location='step".($current_step+1).".php#bottom'; return true;\">\r\n";
@@ -300,7 +300,7 @@ echo "</form>\r\n";
 </table>
 </div>
 <a name=bottom>
-<?
+<?php
 // 7. Конец скрипта.
 include("footer.php");
 }

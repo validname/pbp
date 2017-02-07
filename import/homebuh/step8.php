@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('../../functions/config.php');
 require_once('../../functions/auth.php');
 require_once('../../functions/func_db.php');
@@ -822,7 +822,7 @@ else {
 		<td align=left width=50%>
 		</td>
 		<td align=right width=50%>
-<?
+<?php
 //if( $last_step == $current_step )
 if( 0 ) {
 	echo "<form name=\"form2\" action=\"step".($current_step+1).".php\" method=".FORM_METHOD.">";
@@ -844,7 +844,7 @@ else {
 </table>
 </div>
 <a name=bottom>
-<?
+<?php
 // 7. Конец скрипта.
 include("footer.php");
 }

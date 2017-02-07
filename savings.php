@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_finance.php");
@@ -174,7 +174,7 @@ function delete_sav(form)
 		return false;
 }
 </script>
-<?
+<?php
 
 echo get_table_start("grid");
 echo get_table_header(array("Название", "Сумма", "Комментарий", "=", "X"), "grid"); 

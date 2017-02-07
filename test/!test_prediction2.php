@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_finance.php");
@@ -9,11 +9,11 @@ require_once("functions/func_dic.php");
 $search = web_get_request_value($_REQUEST, "search", 's');
 
 ?>
-<form name="form" action=<? echo $_SERVER['PHP_SELF']; ?> method="<? echo FORM_METHOD; ?>">
-<input type=text name=search value="<? echo $search; ?>">
+<form name="form" action=<?php echo $_SERVER['PHP_SELF']; ?> method="<?php echo FORM_METHOD; ?>">
+<input type=text name=search value="<?php echo $search; ?>">
 <input type=submit>
 </form>
-<?
+<?php
 
 $subcats = array();
 $subcat_weights = array();

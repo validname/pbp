@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('../functions/config.php');
 require_once('../functions/auth.php');
 require_once('../functions/func_db.php');

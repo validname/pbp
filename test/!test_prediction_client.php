@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_finance.php");
@@ -84,13 +84,13 @@ var requestObj = null;
 
 </script>
 
-<form name="form" action=<? echo $_SERVER['PHP_SELF']; ?> method="<? echo FORM_METHOD; ?>" onsubmit="submit_form()">
-<input type=text name=search value="<? echo $search; ?>">
+<form name="form" action=<?php echo $_SERVER['PHP_SELF']; ?> method="<?php echo FORM_METHOD; ?>" onsubmit="submit_form()">
+<input type=text name=search value="<?php echo $search; ?>">
 <input type=submit>
 </form>
 
 <div id="Result" style="">Result ...</div>
-<?
+<?php
 // 8. Конец скрипта.
 include("footer.php");
 ?>

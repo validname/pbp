@@ -1,4 +1,4 @@
-<?
+<?php
 function utf8_win ($s){
 $out=""; 
 $c1=""; 

@@ -1,4 +1,4 @@
-<?
+<?php
 // access to MySQL
 
 require_once("db.config.php");

@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("config.php");
 
 function sent_auth_header()

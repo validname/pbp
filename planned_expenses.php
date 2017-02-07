@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_finance.php");
@@ -89,7 +89,7 @@ function delete_pexp(form)
 		return false;
 }
 </script>
-<?
+<?php
 // {end} 3.2 запрос категорий и подкатегорий расходов
 
 // 4. Отработка действий в формой

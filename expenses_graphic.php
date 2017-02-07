@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_db.php");
@@ -124,13 +124,13 @@ function months_key()
 	}
 }
 </script>
-<?
+<?php
 // вывод формы
 ?>
-<form name="main_form" action=<? echo $_SERVER['PHP_SELF']; ?> method="<? echo FORM_METHOD; ?>">
+<form name="main_form" action=<?php echo $_SERVER['PHP_SELF']; ?> method="<?php echo FORM_METHOD; ?>">
 <table class=layout>
 <tr class=layout><td class=layout id=center>
-<?	
+<?php
 	echo "<input type=hidden name=months_all value=\"".$months_all."\">\r\n";
 	echo "<label for=id_exp_cat>Категория: </label>\r\n";
 	echo web_get_output_webform_selectlist("id_exp_cat", $category_names, $form_id_exp_cat, false, "on_change_cat();");
@@ -139,14 +139,14 @@ function months_key()
 ?>
 </td></tr>
 <tr class=layout><td class=layout id=center>
-<?
+<?php
 	echo "<label for=months>Выборка за месяцев: </label>\r\n";
 	echo "<input type=text id=months maxlength=4 size=4 name=months value=\"".$form_months."\" onKeyDown=\"months_key();\">\r\n";
 ?>
 <input type=button value="-" onClick="add_month(-1);">
 <input type=button value="+" onClick="add_month(1);">
 <input type=button value="все" onClick="document.main_form.months.value=document.main_form.months_all.value;">
-<?
+<?php
 	echo web_get_output_webform_checkbox("wo_last_month", "", $wo_last_month, false);
 	echo "<label for=wo_last_month>кроме последнего</label>\r\n";	
 	//echo web_get_output_webform_checkbox("wo_rare", "", $wo_rare, false);
@@ -156,13 +156,13 @@ function months_key()
 ?>
 </td></tr>
 <tr class=layout><td class=layout id=center>
-<?
+<?php
 ?>
 <input type=submit value="Выбрать">
 </td></tr>
 <tr class=layout><td class=layout>&nbsp;</td></tr>
 <tr class=layout><td class=layout>
-<?
+<?php
 // вывод графика
 $width = 800;
 $height = 500;
@@ -174,4 +174,4 @@ echo "&width=".$width."&height=".$height."&wo_last_month=".$wolm."&rare=".$rare.
 </td>
 </tr></table>
 </form>
-<? include("footer.php"); ?>
+<?php include("footer.php"); ?>

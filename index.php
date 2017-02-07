@@ -1,7 +1,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 </head>
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 include("header.php");
@@ -32,5 +32,5 @@ include("header.php");
 <h3>Специальное</h3>
 <a href="import/step1.php">Импорт данных из HomeBuh (ручной)</a><br>
 <a href="import/homebuh_paradox/import_silent.php">Импорт данных из HomeBuh (автоматический)</a><br>
-<a href="mark_rare_expenses.php">Найти и пометить нетипичные расходы (за последние <? echo RARE_SEARCH_MONTHS; ?> месяцев)</a><br>
+<a href="mark_rare_expenses.php">Найти и пометить нетипичные расходы (за последние <?php echo RARE_SEARCH_MONTHS; ?> месяцев)</a><br>
 <a href="#"></a><br>

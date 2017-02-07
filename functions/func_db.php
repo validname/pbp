@@ -1,4 +1,4 @@
-<?
+<?php
 // функции работы с БД MySQL
 
 require_once("config.php");

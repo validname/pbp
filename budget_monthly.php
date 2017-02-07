@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_finance.php");
@@ -296,17 +296,17 @@ if( $month_next==13 )
 
 ?>
 
-<form name="form" action=<? echo $_SERVER['PHP_SELF']; ?> method="<? echo FORM_METHOD; ?>">
+<form name="form" action=<?php echo $_SERVER['PHP_SELF']; ?> method="<?php echo FORM_METHOD; ?>">
 <table class=layout><tr class=layout>
 <td class=layout>
-<?
+<?php
 	echo "<a href=\"".$_SERVER['PHP_SELF']."?action=change_month&year=".$year_prev."&month=".$month_prev."\">пред.</a>&nbsp;\r\n";
 	echo "<input type=text maxlength=4 size=4 name=year value=\"".$year."\">";
 	echo web_get_output_webform_selectlist("month", $monthes, $month);
 ?>
 <input type=hidden name=action value="change_month">
 <input type=submit value="Выбрать">
-<?
+<?php
 	echo "<a href=\"".$_SERVER['PHP_SELF']."?action=change_month&year=".$year_next."&month=".$month_next."\">след.</a>&nbsp;\r\n";
 ?>
 </td>
@@ -315,17 +315,17 @@ if( $month_next==13 )
 
 <table class=list>
 <tr class=list>
-<th class=list id=framed rowspan=2>#</th><th class=list id=framed rowspan=2 colspan=1>Категория</th><th class=list id=framed colspan=<? echo 5+$attached_acc_count; ?>>Расходы</th><th class=list id=framed rowspan=2>.</th>
+<th class=list id=framed rowspan=2>#</th><th class=list id=framed rowspan=2 colspan=1>Категория</th><th class=list id=framed colspan=<?php echo 5+$attached_acc_count; ?>>Расходы</th><th class=list id=framed rowspan=2>.</th>
 </tr>
 <tr class=list>
 <th class=list id=framed>План.</th><th class=list id=framed>Факт.</th><th class=list id=framed>%</th>
 <th class=list id=framed>остаток</th>
-<? foreach($attached_acc_array as $temp => $id_account) { ?>
-<th class=list id=framed>остаток на счете<br><? echo "\"".$accounts[$id_account][0]."\""; ?><br>(без накоплений)</th>
-<? } ?>
+<?php foreach($attached_acc_array as $temp => $id_account) { ?>
+<th class=list id=framed>остаток на счете<br><?php echo "\"".$accounts[$id_account][0]."\""; ?><br>(без накоплений)</th>
+<?php } ?>
 <th class=list id=framed>+/-</th>
 </tr>
-<?
+<?php
 
 $col_mods_cats_wo_sub = array(
 TXT_ALIGN_RIGHT|CELL_LINE_BOTTOM, 
@@ -797,8 +797,8 @@ if( $month == $month_current )
 ?>
 <hr width=50%>
 <table class=list>
-<tr class=list id=bottom_line><th class=list colspan=2>Данные прошлого месяца (<b><? echo $monthes[$month_prev]; ?></b>)</th></tr>
-<?
+<tr class=list id=bottom_line><th class=list colspan=2>Данные прошлого месяца (<b><?php echo $monthes[$month_prev]; ?></b>)</th></tr>
+<?php
 // 7.1 запрос бюджета
 $query = "SELECT sum(value) FROM budget_monthly WHERE year=".$year_prev." AND month=".$month_prev;
 $res = db_query($query);
@@ -855,7 +855,7 @@ echo "<tr class=list id=bottom_line><td class=list>Остаток от реко�
 
 ?>
 </table>
-<?
+<?php
 // 8. Конец скрипта.
 include("footer.php");
 ?>

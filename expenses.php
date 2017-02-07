@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('functions/config.php');
 require_once('functions/auth.php');
 require_once('functions/func_db.php');
@@ -24,7 +24,7 @@ include("header.php");
        adding a calendar a matter of 1 or 2 lines of code. -->
   <script type="text/javascript" src="jscalendar-1.0/calendar-setup.js"></script>
 
-<?
+<?php
 
 // 1. флаги ошибок
 $updating_invalid_value = 0;
@@ -373,7 +373,7 @@ if( !$res )
 ?>
 <div align=center>
 <!-- form name=\"main_form\" action=\"".$_SERVER['PHP_SELF']."\" method=".FORM_METHOD." -->
-<form name="main_form" action="<? echo $_SERVER['PHP_SELF']?>" method="GET">
+<form name="main_form" action="<?php echo $_SERVER['PHP_SELF']?>" method="GET">
 <input type=hidden name=action value=add>
 <!-- input type=hidden name=sort_field value=".$sort_field.-->
 <!-- input type=hidden name=sort_dsc value=".$sort_dsc."-->
@@ -384,12 +384,12 @@ if( !$res )
 			<tr class=form>
 				<td class=form>Дата</td>
 				<td class=form>
-<?
+<?php
 echo web_get_output_webform_selectlist("day", $days, $f_day);
 echo web_get_output_webform_selectlist("month", $monthes, $f_month);
 echo web_get_output_webform_selectlist("year", $years, $f_year);
 ?>
-				<input type="hidden" name="date" id="date1_field" value="<? echo $f_year."-".$f_month."-".$f_day; ?>" /><button type="reset" id="date1_button">...</button>
+				<input type="hidden" name="date" id="date1_field" value="<?php echo $f_year."-".$f_month."-".$f_day; ?>" /><button type="reset" id="date1_button">...</button>
 				<span style="background-color: #ff8; cursor: default;" id="date1"></span>
 
 <script type="text/javascript">
@@ -540,12 +540,12 @@ echo web_get_output_webform_selectlist("year", $years, $f_year);
 			<table class=form>
 			<tr class=form>
 				<td class=form>Категория<br>
-<? echo web_get_output_webform_selectlist("id_cat", $cat_names, $f_id_cat, false, "set_subcat_list(document.main_form)"); ?>
+<?php echo web_get_output_webform_selectlist("id_cat", $cat_names, $f_id_cat, false, "set_subcat_list(document.main_form)"); ?>
 				</td>
 			</tr>
 			<tr class=form>
 				<td class=form>Подкатегория<br>
-<?
+<?php
 if( isset($subcat_names[$f_id_cat][$f_id_subcat]) )
     $temp_array = $subcat_names[$f_id_cat];
 else
@@ -556,7 +556,7 @@ echo web_get_output_webform_selectlist("id_subcat", $temp_array, $f_id_subcat, f
 			</tr>
 			<tr class=form>
 				<td class=form>Под2категория<br>
-<?
+<?php
 if( isset($subcat2_names[$f_id_subcat][$f_id_subcat2]) )
     $temp_array = $subcat2_names[$f_id_subcat];
 else
@@ -574,7 +574,7 @@ echo web_get_output_webform_selectlist("id_subcat2", $temp_array, $f_id_subcat2)
 			<table class=form>
 			<tr class=form>
 				<td class=form>Счет<br>
-<? echo web_get_output_webform_selectlist("id_account",$accounts, $f_id_account, false); ?>
+<?php echo web_get_output_webform_selectlist("id_account",$accounts, $f_id_account, false); ?>
 				</td>
 			</tr>
 			</table>
@@ -591,7 +591,7 @@ echo web_get_output_webform_selectlist("id_subcat2", $temp_array, $f_id_subcat2)
 </table>
 </form>
 </div>
-<?
+<?php
 
 $fields = array(
 //"#"=>"#",

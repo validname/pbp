@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("config.php");
 
 function web_get_request_value($array, $name, $format)

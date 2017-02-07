@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("config.php");
 
 function get_table_start($css_class="")

@@ -1,4 +1,4 @@
-<?
+<?php
 // finance functions
 require_once("func_db.php");
 

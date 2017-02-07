@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("functions/config.php");
 require_once("functions/auth.php");
 require_once("functions/func_finance.php");
@@ -176,7 +176,7 @@ function calc_sum()
 }
 
 </script>
-<?
+<?php
 
 $checkbox = "<input type=checkbox name=\"reset\" onclick='reset_checkboxes();'>";
 

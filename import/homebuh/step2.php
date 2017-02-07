@@ -1,4 +1,4 @@
-<?
+<?php
 require_once('../../functions/config.php');
 require_once('../../functions/auth.php');
 require_once('../../functions/func_db.php');
@@ -598,15 +598,15 @@ echo "<form name=\"form1\" action=\"".$_SERVER['PHP_SELF']."\" method=".FORM_MET
 </tr>
 <tr class=list>
 <th class=list id=framed>Начальная дата</th>
-<td class=list id=framed><div align=center><input type=text size=10 maxlengh=10 name=start_date value="<? echo $start_date; ?>"></div></td>
-<td class=list id=framed><div align=center><? echo $min_imp_date; ?></div></td>
-<td class=list id=framed><div align=center><? echo $min_date; ?></div></td>
+<td class=list id=framed><div align=center><input type=text size=10 maxlengh=10 name=start_date value="<?php echo $start_date; ?>"></div></td>
+<td class=list id=framed><div align=center><?php echo $min_imp_date; ?></div></td>
+<td class=list id=framed><div align=center><?php echo $min_date; ?></div></td>
 </tr>
 <tr class=list>
 <th class=list id=framed>Конечная дата</th>
-<td class=list id=framed><div align=center><input type=text size=10 maxlengh=10 name=finish_date value="<? echo $finish_date; ?>"></div></td>
-<td class=list id=framed><div align=center><? echo $max_imp_date; ?></div></td>
-<td class=list id=framed><div align=center><? echo $max_date; ?></div></td>
+<td class=list id=framed><div align=center><input type=text size=10 maxlengh=10 name=finish_date value="<?php echo $finish_date; ?>"></div></td>
+<td class=list id=framed><div align=center><?php echo $max_imp_date; ?></div></td>
+<td class=list id=framed><div align=center><?php echo $max_date; ?></div></td>
 </tr>
 <tr class=list>
 <td class=list id=framed colspan=4><div id=center><input type=submit value="Установить"></div></td>
@@ -620,7 +620,7 @@ echo "<form name=\"form1\" action=\"".$_SERVER['PHP_SELF']."\" method=".FORM_MET
 		<td align=left width=50%>
 		</td>
 		<td align=right width=50%>
-<?
+<?php
 if( $last_step == $current_step && $start_date && $finish_date )
 {
 	echo "<form name=\"form2\" action=\"step".($current_step+1).".php\" method=".FORM_METHOD.">";
@@ -639,7 +639,7 @@ if( $last_step == $current_step && $start_date && $finish_date )
 </table>
 </div>
 
-<?
+<?php
 // 7. Конец скрипта.
 include("footer.php");
 }
