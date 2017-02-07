@@ -68,6 +68,7 @@ while( $temp_array=db_fetch_num_array($res) )
 	{
 		$debt_account_id = (int)$temp_array[0];
 		$debt_account_name = db_strip_slashes($temp_array[1]);
+		$debt_account_start_value = (float)$temp_array[2];
 	}
 }
 // (end) 3.3 запрос счетов
@@ -82,8 +83,9 @@ while( $temp_array=db_fetch_num_array($res) )
 
 if( $debt_account_id )
 {
-		if( isset($account_balance_array[$debt_account_id]) )
-			$debt_account_balance = $account_balance_array[$debt_account_id];
+		if( isset($account_balance_array[$debt_account_id]) ) {
+			$debt_account_balance = $account_balance_array[$debt_account_id] + $debt_account_start_value;
+		}
 }
 
 foreach( $account_ids_array as $temp => $id_account )
