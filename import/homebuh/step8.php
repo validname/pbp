@@ -682,36 +682,35 @@ if( !$silent_mode) {
 // 5. Вывод текущего дисбаланса счетов
 
 // 3.2 запрос внутренних счетов
-$account_names = array();
+$accounts_info = array();
 $query  = "SELECT id_account, name, start_value, homebuh_start_value FROM accounts WHERE is_debt='0' ORDER BY name";
 $res = db_query($query);
 if( !$res )
 	{ echo "<hr>Ошибка запроса внутренних счетов. Экстренный выход."; exit(5); }
 while( $temp_array = db_fetch_num_array($res) ) {
-	$account_names[(int)($temp_array[0])] = array(db_strip_slashes($temp_array[1]), (double)$temp_array[2]);
-	$account_start_balances2[(int)($temp_array[0])] = (double)$temp_array[3];
+	$accounts_info[(int)($temp_array[0])] = array(db_strip_slashes($temp_array[1]), (double)$temp_array[2], (double)$temp_array[3]);
 }
 
 // 5.1 запрос баланса счетов ДБ
-$account_balances = array();
+$imported_accounts_balances = array();
 $query  = "SELECT id_account, balance, start_balance from import_map_acc WHERE id_import_mod=".$id_import_mod;
 $res = db_query($query);
 if( !$res )
 	{ echo "<hr>Ошибка запроса баланса импортируемых счетов. Экстренный выход."; exit(5); }
 while( $temp_array = db_fetch_num_array($res) ) {
-	$account_balances[(int)$temp_array[0]] = (double)$temp_array[1];
-	$account_start_balances[(int)$temp_array[0]] = (double)$temp_array[2];
+	$imported_accounts_balances[(int)$temp_array[0]] = (double)$temp_array[1];
+	$imported_accounts_start_values[(int)$temp_array[0]] = (double)$temp_array[2];
 }
 // (end) 5.1 запрос баланса счетов ДБ
 
 // 5.2 запрос баланса счетов PBP по транзакциям
-$account_balances2 = array();
+$accounts_balances = array();
 $query = "SELECT id_account, sum(value) FROM transactions GROUP BY id_account";
 $res = db_query($query);
 if( !$res )
 	{ echo "<hr>Ошибка запроса баланса счетов PBP. Экстренный выход."; exit(5); }
 while( $temp_array=db_fetch_num_array($res) )
-	$account_balances2[(int)$temp_array[0]] = (double)$temp_array[1];
+	$accounts_balances[(int)$temp_array[0]] = (double)$temp_array[1];
 // (end) 5.2 запрос баланса счетов
 
 if( !$silent_mode) {
@@ -721,71 +720,69 @@ if( !$silent_mode) {
 	echo "<table class=list>\r\n";
 	echo "<tr class=list>\r\n";
 	echo_field("name", "Счет");
-	echo_field("balance1", "Баланс ДБ");
-	echo_field("balance2", "Баланс PBP");
+	echo_field("imported_balance", "Баланс ДБ");
+	echo_field("balance", "Баланс PBP");
 	echo_field("difference", "Разница");
 	echo "</tr>\r\n";
 }
-$balanced = true;
+$is_balanced = true;
 
-foreach($account_names as $id_account => $account_info ) {
-	$account_name = $account_info[0];
-	$account_start_value = $account_info[1];
-	if( isset($account_balances[$id_account]) )
-		$balance1 = (float)$account_balances[$id_account];
-	else
-		$balance1 = 0;
-	if( isset($account_start_balances[$id_account]) )
-		$start_balance_hb = (float)$account_start_balances[$id_account];
-	else
-		$start_balance_hb = 0;
+foreach($accounts_info as $id_account => $account_info_array ) {
+	$account_name = $account_info_array[0];
+	$account_start_value = $account_info_array[1];
+	$start_value_hb = $account_info_array[2];
 
-	if( isset($account_balances2[$id_account]) ) {
-		$balance2 = round((float)$account_balances2[$id_account] + $account_start_value, 2);
-		$account_balances2[$id_account] = $balance2;
+	if( isset($imported_accounts_balances[$id_account]) )
+		$imported_balance = (float)$imported_accounts_balances[$id_account];
+	else
+		$imported_balance = 0;
+	if( isset($imported_accounts_start_values[$id_account]) )
+		$imported_start_value_hb = (float)$imported_accounts_start_values[$id_account];
+	else
+		$imported_start_value_hb = 0;
+
+	if( isset($accounts_balances[$id_account]) ) {
+		$balance = round((float)$accounts_balances[$id_account] + $account_start_value, 2);
+		$accounts_balances[$id_account] = $balance;
 	}
 	else
-		$balance2 = 0;
-	if( isset($account_start_balances2[$id_account]) )
-		$start_balance_pbp = (float)$account_start_balances2[$id_account];
-	else
-		$start_balance_pbp = 0;
+		$balance = 0;
 
-	if( $balance1 <> $balance2 ) {
-		$balanced = false;
-		$diff = round($balance1 - $balance2, 2);
+	if( $imported_balance <> $balance ) {
+		$is_balanced = false;
+		$diff = round($imported_balance - $balance, 2);
 		if( !$silent_mode) {
 			echo "<tr class=list>\r\n";
 			echo "<td class=list id=framed><b>".$account_name."<b></td>\r\n";
-			echo "<td class=list id=framed><div align=right>".$balance1."</div></td>\r\n";
-			echo "<td class=list id=framed><div align=right>".$balance2."</div></td>\r\n";
+			echo "<td class=list id=framed><div align=right>".$imported_balance."</div></td>\r\n";
+			echo "<td class=list id=framed><div align=right>".$balance."</div></td>\r\n";
 			echo "<td class=list id=framed><div align=right><font color=red>".$diff."</font></div></td>\r\n";
 			echo "</tr>\r\n";
 		}
 		else{
 			if( $diff )
-				echo "Дисбаланс для счета '".$account_name."': HB=".$balance1.", PBP=".$balance2.", разница=".$diff."\n";
+				echo "Дисбаланс для счета '".$account_name."': HB=".$imported_balance.", PBP=".$balance.", разница=".$diff."\n";
 		}
 	}
 
 	// check for changing is start_balanse (HB)
-	if( $start_balance_hb <> $start_balance_pbp ) {
-		$diff = round($start_balance_hb - $start_balance_pbp, 2);
+	if( $imported_start_value_hb <> $start_value_hb ) {
+		$diff = round($imported_start_value_hb - $start_value_hb, 2);
 		if( !$silent_mode) {
 			echo "<tr class=list>\r\n";
 			echo "<td class=list id=framed><b>".$account_name."<b><br>(стартовый баланс)</td>\r\n";
-			echo "<td class=list id=framed><div align=right>".$start_balance_hb."</div></td>\r\n";
-			echo "<td class=list id=framed><div align=right>".$start_balance_pbp."</div></td>\r\n";
+			echo "<td class=list id=framed><div align=right>".$imported_start_value_hb."</div></td>\r\n";
+			echo "<td class=list id=framed><div align=right>".$start_value_hb."</div></td>\r\n";
 			echo "<td class=list id=framed><div align=right><font color=red>".$diff."</font></div></td>\r\n";
 			echo "</tr>\r\n";
 		}
 		else{
 			if( $diff )
-				echo "Изменился стартовый баланс для счета '".$account_name."': HB=".$start_balance_hb.", сохраненный=".$start_balance_pbp.", разница=".$diff."\n";
+				echo "Изменился стартовый баланс для счета '".$account_name."': HB=".$imported_start_value_hb.", сохраненный=".$start_value_hb.", разница=".$diff."\n";
 		}
 		// update changes
 		$query  = "UPDATE accounts SET ";
-		$query  .= " homebuh_start_value='".$start_balance_hb."'";
+		$query  .= " homebuh_start_value='".$imported_start_value_hb."'";
 		$query  .= " WHERE id_account=".$id_account;
 		$res2 = db_query($query);
 		if( !$res2 )
@@ -795,7 +792,7 @@ foreach($account_names as $id_account => $account_info ) {
 }
 
 if( $silent_mode ){
-	if( $balanced ) {
+	if( $is_balanced ) {
 		echo "Разницы в балансах счетов нет.\n";
 		$exit_code = 0;
 	}
@@ -806,7 +803,7 @@ if( $silent_mode ){
 }
 else {
 
-	if( $balanced ) {
+	if( $is_balanced ) {
 		echo "<tr class=list>\r\n";
 		echo "<td class=list id=framed colspan=4><div align=center>Разницы в балансах счетов нет</div></td>\r\n";
 		echo "</tr>\r\n";
