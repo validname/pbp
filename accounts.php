@@ -11,6 +11,8 @@ $doc_title = "Остатки на счетах";
 include("header.php");
 //print_header_menu();
 
+echo "<script src=\"javascript/sum_by_checked.js\"></script>\r\n";
+
 // 1. флаги ошибок
 
 // 2. подготовка переменных
@@ -122,63 +124,8 @@ else
 
 
 // 6. Вывод формы
-?>
-<script language=Javascript>
 
-function reset_checkboxes()
-{
-	var f = document.tb_form;
-	var all_true = true;
-	var all_false = true;
-	var set = false;
-
-	// check states
-	for(var i = 0; i < f.length; i++)
-	{
-		var e = f.elements[i];
-    if( e.type == "checkbox" )
-    {
-			if( e.checked == true )
-				all_false = false;
-			else
-				all_true = false;
-		}
-  }
-
-  if( all_false == true )	// set checkboxes if empty
-		set = true;
-	else
-		set = false; 
-
-	//setting  
-	for(var i = 0; i < f.length; i++)
-	{
-		var e = f.elements[i];
-    if( e.type == "checkbox" )
-			e.checked = set;
-  }
-  document.th_form.elements[0].checked = set;
-  calc_sum();
-}
-
-function calc_sum()
-{
-	var f = document.tb_form;
-	var sum = 0.0; 
-	for(var i = 0; i < f.length; i++)
-	{
-		var e = f.elements[i];
-    if( e.type == "checkbox" && e.checked == true )
-			sum += parseFloat(e.value)*100;
-  }
-  //округление
-  f.sum.value = sum/100;
-}
-
-</script>
-<?php
-
-$checkbox = "<input type=checkbox name=\"reset\" onclick='reset_checkboxes();'>";
+$checkbox = "<input type=checkbox name=\"reset\" onclick='reset_checkboxes(document.tb_form, this);'>";
 
 echo get_table_start("list");
 echo "<form name=th_form>";
@@ -249,7 +196,7 @@ foreach( $accounts_array as $id_acc_list => $accounts_temp_array )
 		if( !$comment )
 			$comment = "&nbsp;"; 
 		
-		$checkbox = "<input type=checkbox name=".$id_account." value=\"".$account_balance."\" onclick='calc_sum();' ".(($id_account<>$debt_account_id)? "checked": "").">";
+		$checkbox = "<input type=checkbox name=".$id_account." value=\"".$account_balance."\" onclick='calc_sum(document.tb_form);' ".(($id_account<>$debt_account_id)? "checked": "").">";
 		$cells = array($checkbox, $name, get_formatted_amount($account_balance),	$category_name, $comment);
 		echo get_table_row($cells, "grid", TXT_NONE, "", $col_mods);				
 		
@@ -259,7 +206,7 @@ foreach( $accounts_array as $id_acc_list => $accounts_temp_array )
 $cells = array("", "Итого",get_formatted_amount($total_balance), "", "");
 echo get_table_row($cells, "grid", TXT_NONE, "", $col_total_mods);				
 
-$cells = array("", "Сумма", "<input type=text maxlength=10 size=10 name=sum value=\"".($total_balance-$debt_account_balance)."\">", "", "");
+$cells = array("", "Сумма", "<input type=text maxlength=10 size=10 name=checked_sum value=\"".($total_balance-$debt_account_balance)."\">", "", "");
 echo get_table_row($cells, "list", TXT_NONE, "", $col_list_mods);				
 
 echo get_table_end(); 

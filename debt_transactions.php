@@ -11,6 +11,8 @@ $doc_title = "Долговые перемещения";
 //$doc_onLoad = "set_mode();";
 include("header.php");
 
+echo "<script src=\"javascript/sum_by_checked.js\"></script>\r\n";
+
 // 1. флаги ошибок
 $updating_invalid_value = 0;
 $updating_error = 0;
@@ -281,6 +283,11 @@ echo "	</tr>\r\n";
 echo "</table>\r\n";
 echo "</form>\r\n";
 
+echo "<form name=\"th_form\" action=\"\" method="."GET".">\r\n";
+$checked_sum = 0;
+
+$checkbox = "<input type=checkbox name=\"reset\" onclick='reset_checkboxes(document.trx_form, this);'>";
+
 $fields = array(
 //"#"=>"#",
 "date"=>"Дата", 
@@ -288,7 +295,7 @@ $fields = array(
 "account2"=>"Счет-получатель", 
 "value"=>"Сумма", 
 "comment"=>"Комментарий", 
-"tttt"=> "");
+0=> $checkbox);
 $columns_modifiers = array(
 //TXT_ALIGN_CENTER|TXT_NOBR,
 TXT_ALIGN_CENTER|TXT_NOBR, 
@@ -302,6 +309,9 @@ TXT_ALIGN_CENTER
 echo get_table_sort_code();
 echo get_table_start("grid");
 echo get_table_header($fields, "grid", $sort_field, $sort_dsc);
+
+echo "</form>\r\n";
+echo "<form name=\"trx_form\" action=\"\" method="."GET".">\r\n";
 
 $num = 1;
 $total_expenses = 0;
@@ -334,9 +344,11 @@ while( $temp_array = db_fetch_assoc_array($res) )
 		$row_color = '#b0e0b0';
 	}
 	
-	$temp = "<input type=checkbox name=\"id_transaction_".$id_transaction."\"";
-	if( $is_rare ) 
+	$temp = "<input type=checkbox name=\"id_transaction_".$id_transaction."\" value=\"".$value."\" onclick='calc_sum(document.trx_form);'";
+	if( $is_rare ) {
 		$temp .= " checked";
+		$checked_sum += $value;
+	}
 	$temp .= ">";
 
 	$cells = array(
@@ -361,7 +373,19 @@ $cells = array(
 //	"",	
 "","","",$total_balance,"Баланс","");
 echo get_table_row($cells, "grid", TXT_NONE, "background-color:".$row_color.";", $columns_modifiers);
+
+// checked sum
+$columns_modifiers = array(
+//0,
+0,0,0,TXT_ALIGN_CENTER|TXT_BOLD,TXT_ALIGN_LEFT|TXT_BOLD,0);
+$row_color = '#e0f0b0';
+$cells = array(
+//	"",	
+"","","","<input type='text' size=6 name='checked_sum' value='".$checked_sum."'>","Отмечено","");
+echo get_table_row($cells, "grid", TXT_NONE, "background-color:".$row_color.";", $columns_modifiers);
+
 echo get_table_end();
+echo "</form>\r\n";
 echo "<br>\r\n";
 echo "</div>\r\n";
 //$time2 = get_elapsed_microtime();

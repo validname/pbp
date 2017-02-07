@@ -11,6 +11,8 @@ $doc_title = "Транзакции";
 //$doc_onLoad = "set_mode();";
 include("header.php");
 
+echo "<script src=\"javascript/sum_by_checked.js\"></script>\r\n";
+
 // 1. флаги ошибок
 $updating_invalid_value = 0;
 $updating_error = 0;
@@ -166,7 +168,7 @@ if( $trans_exp xor $trans_inc )
 	$categories[0] = array(0, 0);
 }
 // Javascript
-echo "<script language=Javascript>\r\n";
+echo "<script>\r\n";
 echo "function set_subcat_list(form)\r\n";
 echo "{\r\n";
 echo "	form.id_subcat.length=1;\r\n";
@@ -567,63 +569,9 @@ echo "	</tr>\r\n";
 echo "</table>\r\n";
 echo "</form>\r\n";
 
-?>
-<script language=Javascript>
-
-function reset_checkboxes()
-{
-	var f = document.trx_form;
-	var all_true = true;
-	var all_false = true;
-	var set = false;
-
-	// check states
-	for(var i = 0; i < f.length; i++) {
-		var e = f.elements[i];
-		if( e.type == "checkbox" ) {
-			if( e.checked == true )
-				all_false = false;
-			else
-				all_true = false;
-		}
-	}
-
-	if( all_false == true )	// set checkboxes if empty
-		set = true;
-	else
-		set = false; 
-
-	//setting  
-	for(var i = 0; i < f.length; i++)
-	{
-		var e = f.elements[i];
-    if( e.type == "checkbox" )
-			e.checked = set;
-  }
-  document.th_form.elements[0].checked = set;
-  calc_sum();
-}
-
-function calc_sum()
-{
-	var f = document.trx_form;
-	var sum = 0.0; 
-	for(var i = 0; i < f.length; i++)
-	{
-		var e = f.elements[i];
-    if( e.type == "checkbox" && e.checked == true )
-			sum += parseFloat(e.value)*100;
-  }
-  //округление
-  f.checked_sum.value = sum/100;
-}
-
-</script>
-<?php
-
 echo "<form name=\"th_form\" action=\"\" method="."GET".">\r\n";
 
-$checkbox = "<input type=checkbox name=\"reset\" onclick='reset_checkboxes();'>";
+$checkbox = "<input type=checkbox name=\"reset\" onclick='reset_checkboxes(document.trx_form, this);'>";
 
 $fields = array(
 //"#"=>"#",
@@ -702,7 +650,7 @@ while( $temp_array = db_fetch_assoc_array($res) )
 		$row_color = '#b0d0e0';
 	}
 	
-	$temp = "<input type=checkbox name=\"id_transaction_".$id_transaction."\" value=\"".$value."\" onclick='calc_sum();'";
+	$temp = "<input type=checkbox name=\"id_transaction_".$id_transaction."\" value=\"".$value."\" onclick='calc_sum(document.trx_form);'";
 	if( $is_rare ) {
 		$temp .= " checked";
 		$checked_sum += $value;
